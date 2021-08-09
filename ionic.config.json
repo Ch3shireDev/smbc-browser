@@ -1,0 +1,7 @@
+{
+  "name": "smbc-browser-3",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
