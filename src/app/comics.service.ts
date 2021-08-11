@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
 import * as $ from 'jquery/dist/jquery.min.js';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ComicStrip, ComicLink } from './comic';
 
 @Injectable({
@@ -60,30 +60,31 @@ export class ComicsService {
       });
   }
 
-  getComicsList(): Observable<ComicLink[]> {
-    return new Observable<ComicLink[]>(obs => {
-      this.getHtml('https://www.smbc-comics.com/comic/archive')
-        .then(
-          doc => {
-            let list = [];
-            let children = doc.getElementsByName('comic')[0].children;
-            for (let i = 0; i <
-              5
-              //              children.length            
-              ; i++) {
-              let item = children.item(children.length - i - 1);
-              let url = item.getAttribute('value');
-              let title = this.getTitle(item.textContent);
-              let link = new ComicLink();
-              link.url = url;
-              link.title = title;
-              console.log(title);
-
-              list.push(link);
-            }
-            obs.next(list);
+  getComicsList(): Subject<ComicLink> {
+    let subject = new Subject<ComicLink>();
+    this.getHtml('https://www.smbc-comics.com/comic/archive')
+      .then(
+        doc => {
+          let list = [];
+          let children = doc.getElementsByName('comic')[0].children;
+          for (let i = 0; i <
+            30
+            // children.length
+            ; i++) {
+            let item = children.item(children.length - i - 1);
+            let url = item.getAttribute('value');
+            let title = this.getTitle(item.textContent);
+            let link = new ComicLink();
+            link.url = url;
+            link.title = title;
+            console.log(title);
+            subject.next(link);
+            list.push(link);
           }
-        )
-    })
+
+        }
+      )
+
+    return subject;
   }
 }

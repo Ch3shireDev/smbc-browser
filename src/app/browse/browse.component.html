@@ -1,5 +1,42 @@
-<ion-list>
+<!-- <ion-list>
   <ion-item *ngFor="let link of links" detail="false" [href]="link.url">
     {{link.title}}
   </ion-item>
-</ion-list>
+</ion-list> -->
+<!-- 
+<ion-content>
+  <ion-button (click)="toggleInfiniteScroll()" expand="block">
+    Toggle Infinite Scroll
+  </ion-button>
+  <ion-list>
+    <ion-item *ngFor="let link of links">
+      {{link.title}}
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="console.log('hello');loadData($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content> </ion-infinite-scroll
+></ion-content> -->
+
+
+<ion-content padding>
+  <h2>Welcome to Ionic!</h2>
+  <ion-content>
+
+ <ion-list>
+   <ion-item *ngFor="let i of items">{{i}}</ion-item>
+ </ion-list>
+
+ <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+   <ion-infinite-scroll-content></ion-infinite-scroll-content>
+ </ion-infinite-scroll>
+
+</ion-content>
+</ion-content>
