@@ -17,11 +17,7 @@ export class BrowseComponent implements OnInit {
 
   ngOnInit() {
 
-
-    for (let i = 0; i < 30; i++) {
-      this.items.push(this.items.length);
-    }
-
+    this.doInfinite();
     // this.loadData();
     // this.getLinks().asObservable().subscribe(link => {
     //   this.links.push(link);
@@ -31,22 +27,12 @@ export class BrowseComponent implements OnInit {
     //   console.log('done');
     // });
   }
-
-
-  items = [];
-
-  doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
-
-    setTimeout(() => {
-      for (let i = 0; i < 30; i++) {
-
-        this.items.push(this.items.length);
-      }
-
-      console.log('Async operation has ended');
-      infiniteScroll.target.complete();
-    }, 500);
+  from = 0;
+  count = 30;
+  num = 0;
+  doInfinite() {
+    this.comic.getComicsList(this.from, this.count).forEach(link => { this.links.push(link); });
+    this.from += this.count;
   }
 
   // getLinks() {

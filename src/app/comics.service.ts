@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import * as $ from 'jquery/dist/jquery.min.js';
 import { Observable, Subject } from 'rxjs';
 import { ComicStrip, ComicLink } from './comic';
 
@@ -18,7 +17,13 @@ export class ComicsService {
   }
 
   getTitle(title: string) {
-    return title.replace('Saturday Morning Breakfast Cereal - ', '').trim();
+    let array = title.split(' - ');
+    if (array.length == 1) return "";
+    return title.split(' - ')[1];
+  }
+
+  getDate(title: string) {
+    return title.split(' - ')[0];
   }
 
   getComicElement(name: string = null) {
@@ -34,6 +39,8 @@ export class ComicsService {
         let comicUrl = comicElement.attributes['src'].value;
         let after = doc.getElementById('aftercomic');
         let afterUrl = after.getElementsByTagName('img')[0].attributes['src'].value;
+        let nextElements = doc.getElementsByClassName('cc-next');
+        let previousElements = doc.getElementsByClassName('cc-prev');
 
         let comic = new ComicStrip();
 
@@ -42,6 +49,14 @@ export class ComicsService {
         comic.comicUrl = comicUrl;
         comic.comicText = comicText;
         comic.afterUrl = afterUrl;
+        if (nextElements.length>0) {
+          let nextUrl = nextElements[0].attributes['href'].value;
+          comic.next = nextUrl.replace('https://www.smbc-comics.com', '');
+        }
+        if (previousElements.length>0) {
+          let previousUrl = previousElements[0].attributes['href'].value;
+          comic.previous = previousUrl.replace('https://www.smbc-comics.com', '');
+        }
 
         return comic;
       });
@@ -60,26 +75,28 @@ export class ComicsService {
       });
   }
 
-  getComicsList(): Subject<ComicLink> {
+  getComicsList(from: number = 0, num: number = 0): Subject<ComicLink> {
     let subject = new Subject<ComicLink>();
     this.getHtml('https://www.smbc-comics.com/comic/archive')
       .then(
         doc => {
-          let list = [];
+          let links = [];
           let children = doc.getElementsByName('comic')[0].children;
-          for (let i = 0; i <
-            30
-            // children.length
-            ; i++) {
-            let item = children.item(children.length - i - 1);
+          let count = children.length;
+          if (num != 0) count = num;
+          for (let i = 0; i < count; i++) {
+            let index = children.length - i - 1 - from;
+            let item = children.item(index);
             let url = item.getAttribute('value');
-            let title = this.getTitle(item.textContent);
+            let title = item.textContent;
             let link = new ComicLink();
             link.url = url;
-            link.title = title;
-            console.log(title);
+            link.index = index;
+            link.title = this.getTitle(title);
+            link.date = this.getDate(title);
+            links.push(link);
+            console.log(link);
             subject.next(link);
-            list.push(link);
           }
 
         }

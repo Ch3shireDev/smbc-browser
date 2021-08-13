@@ -1,1 +1,12 @@
-<ion-content *ngIf="comics"><img [src]="comics.comicUrl"/></ion-content>
+<ion-content *ngIf="comics">
+  <!-- <ion-slides 
+  (ionSlideNextEnd)="next($event)" 
+   (ionSlidePreviousEnd)="previous($event)" 
+   [options]="{initialSlide:1}">
+      <ion-slide ></ion-slide>
+    <ion-slide> -->
+      <img [src]="comics.comicUrl" /> 
+      <!-- </ion-slide  >
+<ion-slide ></ion-slide>
+</ion-slides> -->
+</ion-content>
