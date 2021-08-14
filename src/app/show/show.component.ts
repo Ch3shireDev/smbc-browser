@@ -1,9 +1,10 @@
 import { Route } from '@angular/compiler/src/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ComicStrip } from '../comic';
 import { ComicsService } from '../comics.service';
-
+import { IonSlides } from '@ionic/angular';
+import { ControlsService } from '../controls.service';
 @Component({
   selector: 'app-show',
   templateUrl: './show.component.html',
@@ -15,32 +16,31 @@ export class ShowComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private comicsService: ComicsService) { }
+    private comicsService: ComicsService,
+    private controls: ControlsService
+  ) { }
 
   ngOnInit() {
     let name = this.route.snapshot.paramMap.get('name');
     this.comicsService.getComicElement(name).then(comics => { this.comics = comics });
+    this.controls.next().subscribe(x => {
+      this.next();
+    });
+    this.controls.prev().subscribe(x => {
+      this.prev();
+    });
   }
 
-  swiped(event) {
-    console.log('swipe');
-    console.log(event);
-  }
-
-  next(event) {
-    console.log(event);
+  next() {
     if (this.comics === undefined) return;
     if (this.comics.next === undefined) return;
     this.router.navigateByUrl(this.comics.next);
   }
 
-  previous(event) {
-    console.log(event);
+  prev() {
     if (this.comics === undefined) return;
-    if (this.comics.next === undefined) return;
-    console.log('previous');
-    console.log(this.comics.previous);
-    this.router.navigateByUrl(this.comics.previous);
+    if (this.comics.prev === undefined) return;
+    console.log(this.comics.prev);
+    this.router.navigateByUrl(this.comics.prev);
   }
-
 }

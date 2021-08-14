@@ -1,12 +1,10 @@
-<ion-content *ngIf="comics">
-  <!-- <ion-slides 
-  (ionSlideNextEnd)="next($event)" 
-   (ionSlidePreviousEnd)="previous($event)" 
-   [options]="{initialSlide:1}">
-      <ion-slide ></ion-slide>
-    <ion-slide> -->
-      <img [src]="comics.comicUrl" /> 
-      <!-- </ion-slide  >
-<ion-slide ></ion-slide>
-</ion-slides> -->
+<ion-content
+  padding
+  appSwipe
+  *ngIf="comics"
+  (swipeLeft)="prev()"
+  (swipeRight)="next()"
+>
+
+  <img [src]="comics.comicUrl" />
 </ion-content>

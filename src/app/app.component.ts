@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ControlsService } from './controls.service';
 
 
 @Component({
@@ -7,5 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private controls: ControlsService) { }
+
+  prev() {
+    this.controls.sendPrev();
+  }
+
+  next() {
+    this.controls.sendNext();
+  }
 }

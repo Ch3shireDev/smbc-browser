@@ -6,7 +6,7 @@ export class ComicStrip {
     public afterUrl: string;
     public date: string;
     public next: string;
-    public previous: string;
+    public prev: string;
 }
 
 export class ComicLink {
@@ -14,6 +14,4 @@ export class ComicLink {
     public url: string;
     public index: number;
     public date: string;
-    public next: string;
-    public previous: string;
 }

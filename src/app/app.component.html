@@ -2,13 +2,21 @@
   <ion-router-outlet></ion-router-outlet>
   <ion-tabs>
     <ion-tab-bar slot="bottom">
+      <ion-tab-button (click)="prev()">
+        <ion-icon name="arrow-back"></ion-icon>
+        <ion-label>Previous</ion-label>
+      </ion-tab-button>
       <ion-tab-button tab="browse">
-        <ion-icon name="calendar"></ion-icon>
+        <ion-icon name="list"></ion-icon>
         <ion-label>Browse</ion-label>
       </ion-tab-button>
       <ion-tab-button tab="latest">
-        <ion-icon name="calendar"></ion-icon>
+        <ion-icon name="play-skip-forward"></ion-icon>
         <ion-label>Latest</ion-label>
+      </ion-tab-button>
+      <ion-tab-button (click)="next()">
+        <ion-icon name="arrow-forward"></ion-icon>
+        <ion-label>Next</ion-label>
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>

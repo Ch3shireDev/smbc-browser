@@ -55,7 +55,7 @@ export class ComicsService {
         }
         if (previousElements.length>0) {
           let previousUrl = previousElements[0].attributes['href'].value;
-          comic.previous = previousUrl.replace('https://www.smbc-comics.com', '');
+          comic.prev = previousUrl.replace('https://www.smbc-comics.com', '');
         }
 
         return comic;
