@@ -1,9 +1,7 @@
-import { Route } from '@angular/compiler/src/core';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ComicStrip } from '../comic';
 import { ComicsService } from '../comics.service';
-import { IonSlides } from '@ionic/angular';
 import { ControlsService } from '../controls.service';
 @Component({
   selector: 'app-show',
@@ -21,8 +19,12 @@ export class ShowComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('show')
     let name = this.route.snapshot.paramMap.get('name');
-    this.comicsService.getComicElement(name).then(comics => { this.comics = comics });
+    console.log(`name: ${name}`)
+    this.comicsService.getComicElement(name).then(comics => {
+      this.comics = comics;
+    });
     this.controls.next().subscribe(x => {
       this.next();
     });
@@ -32,12 +34,15 @@ export class ShowComponent implements OnInit {
   }
 
   next() {
+    console.log('next')
     if (this.comics === undefined) return;
     if (this.comics.next === undefined) return;
+    console.log(this.comics.next);
     this.router.navigateByUrl(this.comics.next);
   }
 
   prev() {
+    console.log('prev')
     if (this.comics === undefined) return;
     if (this.comics.prev === undefined) return;
     console.log(this.comics.prev);

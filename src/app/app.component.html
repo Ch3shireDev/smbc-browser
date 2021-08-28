@@ -10,7 +10,11 @@
         <ion-icon name="list"></ion-icon>
         <ion-label>Browse</ion-label>
       </ion-tab-button>
-      <ion-tab-button tab="latest">
+      <ion-tab-button (click)="random()">
+        <ion-icon name="shuffle-outline"></ion-icon>
+        <ion-label>Random</ion-label>
+      </ion-tab-button>
+      <ion-tab-button (click)="latest()">
         <ion-icon name="play-skip-forward"></ion-icon>
         <ion-label>Latest</ion-label>
       </ion-tab-button>

@@ -7,13 +7,12 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HTTP } from '@ionic-native/http/ngx';
 import { BrowseComponent } from './browse/browse.component';
-import { LatestComponent } from './latest/latest.component';
 import { ShowComponent } from './show/show.component';
 import { ControlsService } from './controls.service';
 import { SwipeModule } from './swipe/swipe.module';
 
 @NgModule({
-  declarations: [AppComponent, BrowseComponent, LatestComponent, ShowComponent],
+  declarations: [AppComponent, BrowseComponent, ShowComponent],
   imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule,
     SwipeModule
   ],

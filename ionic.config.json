@@ -1,5 +1,5 @@
 {
-  "name": "SMBC browser",
+  "name": "SMBC",
   "integrations": {
     "capacitor": {}
   },

@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'SMBC browser',
+  appName: 'SMBC',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {

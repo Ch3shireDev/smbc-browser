@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ComicStrip, ComicLink } from './comic';
 
 @Injectable({
@@ -26,9 +26,24 @@ export class ComicsService {
     return title.split(' - ')[0];
   }
 
+  getRandomComics(): Promise<ComicLink> {
+    console.log('random...')
+    return this.getHtml('https://www.smbc-comics.com/comic/archive')
+      .then(
+        doc => {
+          console.log('random')
+          let children = doc.getElementsByName('comic')[0].children;
+          let count = children.length;
+          let index = Math.floor(Math.random() * count);
+          console.log(index);
+          let item = children.item(index);
+          return this.getComicLink(item, index);
+        });
+  }
+
   getComicElement(name: string = null) {
     let url = `https://www.smbc-comics.com/comic/${name}`;
-    if (name === null) { url = 'https://www.smbc-comics.com/' }
+    if (name === null || name === undefined) { url = 'https://www.smbc-comics.com/' }
     return this
       .getHtml(url)
       .then(doc => {
@@ -49,11 +64,11 @@ export class ComicsService {
         comic.comicUrl = comicUrl;
         comic.comicText = comicText;
         comic.afterUrl = afterUrl;
-        if (nextElements.length>0) {
+        if (nextElements.length > 0) {
           let nextUrl = nextElements[0].attributes['href'].value;
           comic.next = nextUrl.replace('https://www.smbc-comics.com', '');
         }
-        if (previousElements.length>0) {
+        if (previousElements.length > 0) {
           let previousUrl = previousElements[0].attributes['href'].value;
           comic.prev = previousUrl.replace('https://www.smbc-comics.com', '');
         }
@@ -63,8 +78,10 @@ export class ComicsService {
   }
 
   getHtml(url): Promise<Document> {
+    console.log('downloading html...')
     return this.http.get(url, {}, {})
       .then(data => {
+        console.log('downloaded')
         if (data.status != 200) throw new Error();
         return data.data;
       })
@@ -87,21 +104,26 @@ export class ComicsService {
           for (let i = 0; i < count; i++) {
             let index = children.length - i - 1 - from;
             let item = children.item(index);
-            let url = item.getAttribute('value');
-            let title = item.textContent;
-            let link = new ComicLink();
-            link.url = url;
-            link.index = index;
-            link.title = this.getTitle(title);
-            link.date = this.getDate(title);
+            let link = this.getComicLink(item, index);
             links.push(link);
-            console.log(link);
             subject.next(link);
           }
-
         }
       )
 
     return subject;
+  }
+
+  private getComicLink(item: Element, index: number): ComicLink {
+    console.log(item)
+    let url = item.getAttribute('value');
+    let title = item.textContent;
+    let link = new ComicLink();
+    link.url = `/${url}`;
+    link.index = index;
+    link.title = this.getTitle(title);
+    link.date = this.getDate(title);
+    console.log(`created link: ${url}`)
+    return link;
   }
 }
